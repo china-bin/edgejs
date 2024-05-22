@@ -1,0 +1,19 @@
+{
+  "scripts": {
+    "dev": "wrangler dev src/index.ts",
+    "deploy": "wrangler deploy --minify src/index.ts",
+    "db:generate": "drizzle-kit generate:sqlite",
+    "db:admin": "drizzle-kit up:sqlite",
+    "db:migrate": "npx wrangler d1 migrations apply workers-hono-api-example --local",
+    "db:migrate:prod": "npx wrangler d1 migrations apply workers-hono-api-example --remote"
+  },
+  "dependencies": {
+    "drizzle-orm": "^0.30.4",
+    "hono": "^4.1.5"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20240208.0",
+    "drizzle-kit": "^0.20.14",
+    "wrangler": "^3.32.0"
+  }
+}
