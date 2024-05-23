@@ -2,7 +2,7 @@ import { user } from '../../db/schema';
 import { DrizzleDB } from '../../utils/helpers';
 
 async function index(db: DrizzleDB) {
-  db.insert(user).values({
+  await db.insert(user).values({
     email: 'xxx',
     password: 'fffffff',
   });
