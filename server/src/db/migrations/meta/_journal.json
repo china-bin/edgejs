@@ -1,12 +1,12 @@
 {
-  "version": "5",
+  "version": "6",
   "dialect": "sqlite",
   "entries": [
     {
       "idx": 0,
-      "version": "5",
-      "when": 1716432804020,
-      "tag": "0000_volatile_charles_xavier",
+      "version": "6",
+      "when": 1716465870411,
+      "tag": "0000_bright_warstar",
       "breakpoints": true
     }
   ]

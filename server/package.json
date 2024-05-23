@@ -2,7 +2,7 @@
   "scripts": {
     "dev": "wrangler dev --port 4000 src/index.ts",
     "deploy": "wrangler deploy --minify src/index.ts",
-    "db:generate": "drizzle-kit generate:sqlite",
+    "db:generate": "drizzle-kit generate",
     "db:migrate": "npx wrangler d1 migrations apply dev-edgejs --local",
     "db:migrate:prod": "npx wrangler d1 migrations apply dev-edgejs --remote"
   },
