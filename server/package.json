@@ -4,8 +4,8 @@
     "deploy": "wrangler deploy --minify src/index.ts",
     "db:generate": "drizzle-kit generate:sqlite",
     "db:admin": "drizzle-kit up:sqlite",
-    "db:migrate": "npx wrangler d1 migrations apply workers-hono-api-example --local",
-    "db:migrate:prod": "npx wrangler d1 migrations apply workers-hono-api-example --remote"
+    "db:migrate": "npx wrangler d1 migrations apply dev-edgejs --local",
+    "db:migrate:prod": "npx wrangler d1 migrations apply dev-edgejs --remote"
   },
   "dependencies": {
     "drizzle-orm": "^0.30.4",
