@@ -9,8 +9,9 @@ const app = new Hono();
 app.use(
   '/*',
   cors({
-    origin: '*',
-    exposeHeaders: ['Rtoken'],
+    origin: ['http://localhost:3000'],
+    // exposeHeaders: ['Rtoken'],
+    credentials: true,
   })
 );
 

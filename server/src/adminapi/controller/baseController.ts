@@ -1,4 +1,3 @@
-
 import { Hono } from 'hono';
 import { Context } from '../../types';
 import { getDB } from '../../utils/helpers';
@@ -7,15 +6,16 @@ import baseLogic from '../logic/baseLogic';
 
 const app = new Hono<Context>();
 
+app.post('/login', async (c) => {
+//   const body = await c.req.json();
+//   const db = getDB(c);
+//   const result = baseLogic.login(db, body);
 
-app.post("/login", async (c) => {
-    const body = await c.req.json();
-    const db = getDB(c);
-    const result = baseLogic.login(db, body);
+  return respSuccess(c, {});
+});
 
-    return respSuccess(c, body);
-})
-
-
+app.get('/index', async (c) => {
+  return respSuccess(c, {}, 'adminapi');
+});
 
 export default app;

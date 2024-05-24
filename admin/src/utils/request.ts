@@ -8,8 +8,8 @@ function getToken() {
   return cache.get("token");
 }
 const service = axios.create({
-  withCredentials: false,
-  baseURL: config.baseUrl + config.urlPrefix,
+  withCredentials: true,
+  baseURL: config.baseUrl,
   timeout: config.timeout,
 });
 
@@ -54,3 +54,5 @@ service.interceptors.response.use(
     return Promise.reject(error.message);
   }
 );
+
+export default service;
