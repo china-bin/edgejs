@@ -8,7 +8,7 @@ function getToken() {
   return cache.get("token");
 }
 const service = axios.create({
-  withCredentials: true,
+  // withCredentials: true,
   baseURL: config.baseUrl,
   timeout: config.timeout,
 });
