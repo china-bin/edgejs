@@ -3,17 +3,24 @@ import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 
 export const user = sqliteTable('user', {
   id: integer('id').primaryKey(),
+  uid: text('uid'), // 用户uid
   email: text('email'),
+  avatar: text('avatar'), // 头像地址
   username: text('username'),
   password: text('password'),
   appType: text('app_type'),
-  headImg: text('head_img'),
   oauthType: integer('oauth_type').default(0), //  1=google用户
-  openid: text('openid'),
+  openid: text('openid'), // oauth登录的唯一标识
   country: text('country'), // 国家
   city: text('city'), // 城市
-  latitude: text('latitude'),
-  longitude: text('longitude'),
+  region: text('region'), // 地区
+  latitude: text('latitude'), // 纬度
+  longitude: text('longitude'), // 经度
+  timezone: text('timezone'), // 时区
+  postalCode: text('postal_code'), // 邮编
+  remark: text('remark'), // 备注
+  mobile: text('mobile'), // 手机号
+  platform: text('platform'), // 系统平台 android ios pc h5
   createAt: text('create_at').default(sql`(CURRENT_TIMESTAMP)`),
 });
 
