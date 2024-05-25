@@ -1,0 +1,21 @@
+import { http } from "@/utils/request";
+
+// 用户列表
+function list(params) {
+  return http.get("adminapi/user/list", params);
+}
+// 添加用户
+function add(data) {
+  return http.post("adminapi/user/add", data);
+}
+
+// 用户详情
+function detail(params) {
+  return http.get("adminapi/user/detail", params);
+}
+
+export default {
+  list,
+  add,
+  detail,
+};

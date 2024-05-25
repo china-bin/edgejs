@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from "react";
 import {
   Table,
   Card,
@@ -6,16 +6,19 @@ import {
   Button,
   Space,
   Typography,
-} from '@arco-design/web-react';
-import PermissionWrapper from '@/components/PermissionWrapper';
-import { IconDownload, IconPlus } from '@arco-design/web-react/icon';
-import axios from 'axios';
-import useLocale from '@/hooks/useLocale';
-import SearchForm from './form';
-import locale from './locale';
-import styles from './style/index.module.less';
-import './mock';
-import { getColumns } from './constants';
+} from "@arco-design/web-react";
+import PermissionWrapper from "@/components/PermissionWrapper";
+import { IconDownload, IconPlus } from "@arco-design/web-react/icon";
+import axios from "axios";
+import useLocale from "@/hooks/useLocale";
+import SearchForm from "./form";
+import locale from "./locale";
+import styles from "./style/index.module.less";
+import "./mock";
+import { getColumns } from "./constants";
+import DetailModal from "./modal/DetailModal";
+import { ModelDetailType } from "@/types";
+import userApi from "@/api/user";
 
 const { Title } = Typography;
 
@@ -24,6 +27,9 @@ function SearchTable() {
 
   const tableCallback = async (record, type) => {
     console.log(record, type);
+    if (type == "view") {
+      showDetialModal("look");
+    }
   };
 
   const columns = useMemo(() => getColumns(t, tableCallback), [t]);
@@ -39,6 +45,13 @@ function SearchTable() {
   const [loading, setLoading] = useState(true);
   const [formParams, setFormParams] = useState({});
 
+  const [dtailVisiable, setDetailVisiable] = useState(false);
+  const [detailType, setDetailType] = useState<ModelDetailType>("add");
+  function showDetialModal(type: ModelDetailType) {
+    setDetailType(type);
+    setDetailVisiable(true);
+  }
+
   useEffect(() => {
     fetchData();
   }, [pagination.current, pagination.pageSize, JSON.stringify(formParams)]);
@@ -47,7 +60,7 @@ function SearchTable() {
     const { current, pageSize } = pagination;
     setLoading(true);
     axios
-      .get('/api/list', {
+      .get("/api/list", {
         params: {
           page: current,
           pageSize,
@@ -61,6 +74,23 @@ function SearchTable() {
           current,
           pageSize,
           total: res.data.total,
+        });
+        setLoading(false);
+      });
+
+    userApi
+      .list({
+        page: current,
+        pageSize,
+        ...formParams,
+      })
+      .then((res) => {
+        setData(res.list);
+        setPatination({
+          ...pagination,
+          current,
+          pageSize,
+          total: res.total,
         });
         setLoading(false);
       });
@@ -81,23 +111,29 @@ function SearchTable() {
 
   return (
     <Card>
-      <Title heading={6}>{t['menu.list.searchTable']}</Title>
+      <Title heading={6}>{t["menu.list.searchTable"]}</Title>
       <SearchForm onSearch={handleSearch} />
       <PermissionWrapper
-        requiredPermissions={[
-          { resource: 'menu.list.searchTable', actions: ['write'] },
-        ]}
+        requiredPermissions={
+          [
+            // { resource: 'menu.list.searchTable', actions: ['write'] },
+          ]
+        }
       >
-        <div className={styles['button-group']}>
+        <div className={styles["button-group"]}>
           <Space>
-            <Button type="primary" icon={<IconPlus />}>
-              {t['searchTable.operations.add']}
+            <Button
+              type="primary"
+              onClick={() => showDetialModal("add")}
+              icon={<IconPlus />}
+            >
+              {t["searchTable.operations.add"]}
             </Button>
-            <Button>{t['searchTable.operations.upload']}</Button>
+            <Button>{t["searchTable.operations.upload"]}</Button>
           </Space>
           <Space>
             <Button icon={<IconDownload />}>
-              {t['searchTable.operation.download']}
+              {t["searchTable.operation.download"]}
             </Button>
           </Space>
         </div>
@@ -109,6 +145,12 @@ function SearchTable() {
         pagination={pagination}
         columns={columns}
         data={data}
+      />
+
+      <DetailModal
+        visible={dtailVisiable}
+        detailType={detailType}
+        setVisible={setDetailVisiable}
       />
     </Card>
   );

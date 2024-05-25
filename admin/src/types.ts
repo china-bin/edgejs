@@ -1,0 +1,1 @@
+export type ModelDetailType = "edit" | "add" | "look";

@@ -7,6 +7,7 @@ const i18n = {
     "searchTable.columns.id": "用户id",
     "searchTable.columns.uid": "用户uid",
     "searchTable.columns.username": "用户名",
+    "searchTable.columns.email": "邮件地址",
     "searchTable.columns.avatar": "头像",
     "searchTable.columns.oauthType": "注册方式",
     "searchTable.columns.country": "国家",
