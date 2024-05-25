@@ -15,6 +15,7 @@ import useLocale from "@/utils/useLocale";
 import locale from "./locale";
 import styles from "./style/index.module.less";
 import baseApi from "@/api/base";
+import cache from "@/utils/cache";
 
 export default function LoginForm() {
   const formRef = useRef<FormInstance>();
@@ -34,8 +35,7 @@ export default function LoginForm() {
     } else {
       removeLoginParams();
     }
-    // 记录登录状态
-    localStorage.setItem("userStatus", "login");
+
     // 跳转首页
     window.location.href = "/";
   }
@@ -43,24 +43,13 @@ export default function LoginForm() {
   function login(params) {
     setErrorMessage("");
     setLoading(true);
-    // axios
-    //   .post('/api/user/login', params)
-    //   .then((res) => {
-    //     const { status, msg } = res.data;
-    //     if (status === 'ok') {
-    //       afterLoginSuccess(params);
-    //     } else {
-    //       setErrorMessage(msg || t['login.form.login.errMsg']);
-    //     }
-    //   })
-    //   .finally(() => {
-    //     setLoading(false);
-    //   });
 
     baseApi
       .login(params)
       .then((res) => {
-        // afterLoginSuccess(params);
+        // 设置登录态
+        cache.set("token", res.token);
+        afterLoginSuccess(params);
       })
       .finally(() => {
         setLoading(false);
@@ -76,7 +65,7 @@ export default function LoginForm() {
 
   // 读取 localStorage，设置初始值
   useEffect(() => {
-    console.log("loginParams", loginParams)
+    console.log("loginParams", loginParams);
     const rememberPassword = !!loginParams;
     setRememberPassword(rememberPassword);
     if (formRef.current && rememberPassword) {

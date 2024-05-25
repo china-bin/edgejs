@@ -13,6 +13,7 @@ const service = axios.create({
   timeout: config.timeout,
 });
 
+// 请求拦截器
 service.interceptors.request.use(
   (config) => {
     if (config.method?.toUpperCase() == "GET") {
@@ -25,7 +26,7 @@ service.interceptors.request.use(
 
     const token = getToken();
     if (token) {
-      config.headers.token = token;
+      config.headers.Authorization = `Bearer ${token}`;
     }
 
     return config;
@@ -35,6 +36,7 @@ service.interceptors.request.use(
   }
 );
 
+// 响应拦截器
 service.interceptors.response.use(
   (response) => {
     const res = response.data;
@@ -55,18 +57,28 @@ service.interceptors.response.use(
   }
 );
 
-const http = {
-  get<T = any>(url: string, config?: AxiosRequestConfig): Promise<T> {
-    return service.get(url, config);
-  },
 
-  post<T = any>(
-    url: string,
-    data?: object,
-    config?: AxiosRequestConfig
-  ): Promise<T> {
-    return service.post(url, data, config);
-  },
-};
+export default service;
 
-export default http;
+// const http = {
+//   get<T = any>(
+//     url: string,
+//     params?: object,
+//     config?: AxiosRequestConfig
+//   ): Promise<T> {
+//     return service.get(url, {
+//       ...config,
+//       params,
+//     });
+//   },
+
+//   post<T = any>(
+//     url: string,
+//     data?: object,
+//     config?: AxiosRequestConfig
+//   ): Promise<T> {
+//     return service.post(url, data, config);
+//   },
+// };
+
+// export default http;

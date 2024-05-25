@@ -1,3 +1,6 @@
+import cache from "./cache";
+
 export default function checkLogin() {
-  return localStorage.getItem('userStatus') === 'login';
+
+  return cache.get("token") ? true :false;
 }
