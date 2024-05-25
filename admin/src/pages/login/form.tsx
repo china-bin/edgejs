@@ -57,7 +57,14 @@ export default function LoginForm() {
     //     setLoading(false);
     //   });
 
-    baseApi.login(params).then((res) => {});
+    baseApi
+      .login(params)
+      .then((res) => {
+        // afterLoginSuccess(params);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }
 
   function onSubmitClick() {
@@ -69,6 +76,7 @@ export default function LoginForm() {
 
   // 读取 localStorage，设置初始值
   useEffect(() => {
+    console.log("loginParams", loginParams)
     const rememberPassword = !!loginParams;
     setRememberPassword(rememberPassword);
     if (formRef.current && rememberPassword) {
@@ -88,15 +96,15 @@ export default function LoginForm() {
         className={styles["login-form"]}
         layout="vertical"
         ref={formRef}
-        initialValues={{ userName: "admin", password: "admin" }}
+        initialValues={{ username: "admin", password: "123456" }}
       >
         <Form.Item
-          field="userName"
-          rules={[{ required: true, message: t["login.form.userName.errMsg"] }]}
+          field="username"
+          rules={[{ required: true, message: t["login.form.username.errMsg"] }]}
         >
           <Input
             prefix={<IconUser />}
-            placeholder={t["login.form.userName.placeholder"]}
+            placeholder={t["login.form.username.placeholder"]}
             onPressEnter={onSubmitClick}
           />
         </Form.Item>

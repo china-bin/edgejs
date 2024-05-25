@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosRequestConfig } from "axios";
 import config from "./config";
 import cache from "./cache";
 import reqUtils from "./reqUtils";
@@ -44,15 +44,29 @@ service.interceptors.response.use(
       console.log("退出登录逻辑---");
       return Promise.reject(res.msg || "Error");
     } else {
-      Message.info(res.message);
+      Message.error(res.msg);
       return Promise.reject(res.msg || "Error");
     }
   },
   (error) => {
     console.log("err" + error);
-    Message.info(error.message);
+    Message.error(error.message);
     return Promise.reject(error.message);
   }
 );
 
-export default service;
+const http = {
+  get<T = any>(url: string, config?: AxiosRequestConfig): Promise<T> {
+    return service.get(url, config);
+  },
+
+  post<T = any>(
+    url: string,
+    data?: object,
+    config?: AxiosRequestConfig
+  ): Promise<T> {
+    return service.post(url, data, config);
+  },
+};
+
+export default http;

@@ -7,11 +7,13 @@ import baseLogic from '../logic/baseLogic';
 const app = new Hono<Context>();
 
 app.post('/login', async (c) => {
-//   const body = await c.req.json();
-//   const db = getDB(c);
-//   const result = baseLogic.login(db, body);
+ 
+  const result = await baseLogic.login(c);
+  if (!result.state) {
+    return respFail(c, result.msg);
+  }
 
-  return respSuccess(c, {});
+  return respSuccess(c, result.data);
 });
 
 app.get('/index', async (c) => {
