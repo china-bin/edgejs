@@ -10,3 +10,12 @@ export type Context = {
     API_JWT_SECRET: string;
   };
 };
+
+
+type Response = {
+  state: Boolean;
+  msg?: string;
+  data?: Record<string, any>;
+};
+
+export type LogicResponse = Promise<Response>;

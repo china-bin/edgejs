@@ -37,6 +37,7 @@ export const admin = sqliteTable('admin', {
   id: integer('id').primaryKey(),
   root: integer('root').default(0), // 是否超级管理员 0-否 1-是
   username: text('username'),
+  avatar: text('avatar'),
   password: text('password'),
 });
 
