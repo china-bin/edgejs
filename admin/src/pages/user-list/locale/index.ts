@@ -12,7 +12,7 @@ const i18n = {
     "searchTable.columns.oauthType": "注册方式",
     "searchTable.columns.country": "国家",
     "searchTable.columns.city": "城市",
-    "searchTable.columns.createdTime": "创建时间",
+    "searchTable.columns.createAt": "创建时间",
     "searchTable.columns.operations": "操作",
     "searchTable.columns.operations.view": "查看",
     "searchTable.columns.operations.update": "修改",

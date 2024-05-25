@@ -4,7 +4,7 @@ import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 export const user = sqliteTable('user', {
   id: integer('id').primaryKey(),
   uid: text('uid'), // 用户uid
-  email: text('email'),
+  email: text('email'), // 邮件账号
   avatar: text('avatar'), // 头像地址
   username: text('username'),
   password: text('password'),

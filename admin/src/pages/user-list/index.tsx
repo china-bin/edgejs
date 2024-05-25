@@ -59,24 +59,6 @@ function SearchTable() {
   function fetchData() {
     const { current, pageSize } = pagination;
     setLoading(true);
-    axios
-      .get("/api/list", {
-        params: {
-          page: current,
-          pageSize,
-          ...formParams,
-        },
-      })
-      .then((res) => {
-        setData(res.data.list);
-        setPatination({
-          ...pagination,
-          current,
-          pageSize,
-          total: res.data.total,
-        });
-        setLoading(false);
-      });
 
     userApi
       .list({
@@ -92,6 +74,8 @@ function SearchTable() {
           pageSize,
           total: res.total,
         });
+      })
+      .finally(() => {
         setLoading(false);
       });
   }

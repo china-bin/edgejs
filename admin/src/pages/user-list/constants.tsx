@@ -51,10 +51,9 @@ export function getColumns(
       dataIndex: "city",
     },
     {
-      title: t["searchTable.columns.createdTime"],
-      dataIndex: "createdTime",
-      render: (x) => dayjs().subtract(x, "days").format("YYYY-MM-DD HH:mm:ss"),
-      sorter: (a, b) => b.createdTime - a.createdTime,
+      title: t["searchTable.columns.createAt"],
+      dataIndex: "createAt",
+      sorter: (a, b) => b.createAt - a.createAt,
     },
     {
       title: t["searchTable.columns.operations"],
