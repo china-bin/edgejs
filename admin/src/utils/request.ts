@@ -39,6 +39,14 @@ service.interceptors.request.use(
 // 响应拦截器
 service.interceptors.response.use(
   (response) => {
+    //-- 刷新token
+    const rtoken = response.headers["Rtoken"];
+    if (rtoken) {
+      console.log("刷新token");
+      cache.set("token", rtoken);
+    }
+    // --
+
     const res = response.data;
     if (res.code == 200) {
       return res.data;
@@ -56,7 +64,6 @@ service.interceptors.response.use(
     return Promise.reject(error.message);
   }
 );
-
 
 export default service;
 

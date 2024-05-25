@@ -16,11 +16,13 @@ app.post('/login', async (c) => {
 });
 
 app.get('/userInfo', async (c) => {
+  const payload = c.get('jwtPayload');
   return respSuccess(c, {
     name: 'admin',
     avatar:
       'https://lf1-xgcdn-tos.pstatp.com/obj/vcloud/vadmin/start.8e0e4855ee346a46ccff8ff3e24db27b.png',
     permissions: [],
+    payload
   });
 });
 

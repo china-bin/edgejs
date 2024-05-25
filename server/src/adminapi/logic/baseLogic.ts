@@ -4,23 +4,14 @@ import { DrizzleDB, HonoContext, getDB } from '../../utils/helpers';
 import { respSuccess } from '../../utils/resp';
 import { Context } from '../../types';
 import { sign } from 'hono/jwt';
+import { genAdminJwtToken } from '../../midleware/adminJwtAuth';
 
-async function _genAdminJwtToken(c: HonoContext, userId: number) {
-  // 多少天之后token失效
-  const expDay = 30 * (24 * 60 * 60 * 1000);
-  const payload = {
-    userId: userId,
-    exp: Math.floor((Date.now() + expDay) / 1000),
-  };
-  const token = await sign(payload, c.env.ADMAPI_JWT_SECRET, 'HS256');
-  return token;
-}
+
 
 async function login(c: HonoContext) {
   const body = await c.req.json();
   const username = body['username'];
   const password = body['password'];
-  ``;
 
   // 根据用户名查询
   const db = getDB(c);
@@ -31,7 +22,7 @@ async function login(c: HonoContext) {
   if (adminInfo.length) {
     const info = adminInfo[0];
     if (info && info.password == password) {
-      const token = await _genAdminJwtToken(c, info.id);
+      const token = await genAdminJwtToken(c, info.id);
       return {
         state: true,
         msg: '',
