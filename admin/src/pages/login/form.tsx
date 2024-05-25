@@ -15,7 +15,6 @@ import useLocale from "@/utils/useLocale";
 import locale from "./locale";
 import styles from "./style/index.module.less";
 import baseApi from "@/api/base";
-import cache from "@/utils/cache";
 
 export default function LoginForm() {
   const formRef = useRef<FormInstance>();
@@ -27,6 +26,7 @@ export default function LoginForm() {
   const t = useLocale(locale);
 
   const [rememberPassword, setRememberPassword] = useState(!!loginParams);
+  const [token, setToken, removeToken] = useStorage("token");
 
   function afterLoginSuccess(params) {
     // 记住密码
@@ -48,7 +48,7 @@ export default function LoginForm() {
       .login(params)
       .then((res) => {
         // 设置登录态
-        cache.set("token", res.token);
+        setToken(res.token)
         afterLoginSuccess(params);
       })
       .finally(() => {

@@ -8,8 +8,8 @@ type CacheKey =
   | "arcoLang"
   | "arcoTheme";
 
-const getDefaultStorage = (key) => {
-  return localStorage.getItem(key);
+const getDefaultStorage = (key: string) => {
+  return localStorage.getItem(prefixKey + key);
 };
 
 const prefixKey = "admin_";
@@ -18,31 +18,41 @@ function useStorage(
   key: CacheKey,
   defaultValue?: string
 ): [string, (string) => void, () => void] {
-  const realKey = prefixKey + key;
-
   const [storedValue, setStoredValue] = useState(
-    getDefaultStorage(realKey) || defaultValue
+    getDefaultStorage(key) || defaultValue
   );
 
   const setStorageValue = (value: string) => {
-    localStorage.setItem(realKey, value);
+    storeSetItem(key, value);
     if (value !== storedValue) {
       setStoredValue(value);
     }
   };
 
   const removeStorage = () => {
-    localStorage.removeItem(realKey);
+    storeRemoveItem(key);
   };
 
   useEffect(() => {
-    const storageValue = localStorage.getItem(realKey);
+    const storageValue = storeGetItem(key);
     if (storageValue) {
       setStoredValue(storageValue);
     }
   }, []);
 
   return [storedValue, setStorageValue, removeStorage];
+}
+
+export function storeSetItem(key: CacheKey, value: string) {
+  localStorage.setItem(prefixKey + key, value);
+}
+
+export function storeGetItem(key: CacheKey) {
+  return localStorage.getItem(prefixKey + key);
+}
+
+export function storeRemoveItem(key: CacheKey) {
+  return localStorage.removeItem(prefixKey + key);
 }
 
 export default useStorage;

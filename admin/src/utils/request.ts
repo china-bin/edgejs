@@ -1,11 +1,11 @@
 import axios, { AxiosRequestConfig } from "axios";
 import config from "./config";
-import cache from "./cache";
 import reqUtils from "./reqUtils";
 import { Message } from "@arco-design/web-react";
+import useStorage, { storeGetItem, storeSetItem } from "./useStorage";
 
 function getToken() {
-  return cache.get("token");
+  return storeGetItem("token");
 }
 const service = axios.create({
   // withCredentials: true,
@@ -43,7 +43,7 @@ service.interceptors.response.use(
     const rtoken = response.headers["Rtoken"];
     if (rtoken) {
       console.log("刷新token");
-      cache.set("token", rtoken);
+      storeSetItem("token", rtoken);
     }
     // --
 

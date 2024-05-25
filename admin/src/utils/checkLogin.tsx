@@ -1,6 +1,5 @@
-import cache from "./cache";
+import { storeGetItem } from "./useStorage";
 
 export default function checkLogin() {
-
-  return cache.get("token") ? true :false;
+  return storeGetItem("token") ? true : false;
 }

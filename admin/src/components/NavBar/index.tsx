@@ -34,7 +34,6 @@ import styles from "./style/index.module.less";
 import defaultLocale from "@/locale";
 import useStorage from "@/utils/useStorage";
 import { generatePermission } from "@/routes";
-import cache from "@/utils/cache";
 
 function Navbar({ show }: { show: boolean }) {
   const t = useLocale();
@@ -42,11 +41,12 @@ function Navbar({ show }: { show: boolean }) {
   const dispatch = useDispatch();
 
   const [role, setRole] = useStorage("userRole", "admin");
+  const [token, setToken, removeToken] = useStorage("token");
 
   const { setLang, lang, theme, setTheme } = useContext(GlobalContext);
 
   function logout() {
-    cache.remove("token");
+    removeToken();
     window.location.href = "/login";
   }
 
