@@ -1,20 +1,12 @@
-import request from "@/utils/request";
+import { http } from "@/utils/request";
 
 // 登录
 function login(data) {
-  return request({
-    url: "adminapi/base/login",
-    method: "post",
-    data,
-  });
+  return http.post("adminapi/base/login", data);
 }
 
 function userInfo(params) {
-  return request({
-    url: "adminapi/base/userInfo",
-    method: "get",
-    params,
-  });
+  return http.get("adminapi/base/userInfo", params);
 }
 
 export default {

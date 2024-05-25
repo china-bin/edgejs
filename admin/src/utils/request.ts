@@ -65,27 +65,16 @@ service.interceptors.response.use(
   }
 );
 
-export default service;
+// export default service;
 
-// const http = {
-//   get<T = any>(
-//     url: string,
-//     params?: object,
-//     config?: AxiosRequestConfig
-//   ): Promise<T> {
-//     return service.get(url, {
-//       ...config,
-//       params,
-//     });
-//   },
+export const http = {
+  get<T = any>(url: string, params?: object): Promise<T> {
+    return service.get(url, {
+      params,
+    });
+  },
 
-//   post<T = any>(
-//     url: string,
-//     data?: object,
-//     config?: AxiosRequestConfig
-//   ): Promise<T> {
-//     return service.post(url, data, config);
-//   },
-// };
-
-// export default http;
+  post<T = any>(url: string, data?: object): Promise<T> {
+    return service.post(url, data);
+  },
+};
