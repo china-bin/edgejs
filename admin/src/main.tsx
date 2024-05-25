@@ -20,8 +20,8 @@ import baseApi from "@/api/base";
 const store = createStore(rootReducer);
 
 function Index() {
-  const [lang, setLang] = useStorage("arco-lang", "en-US");
-  const [theme, setTheme] = useStorage("arco-theme", "light");
+  const [lang, setLang] = useStorage("arcoLang", "en-US");
+  const [theme, setTheme] = useStorage("arcoTheme", "light");
 
   function getArcoLocale() {
     switch (lang) {

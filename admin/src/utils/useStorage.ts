@@ -1,42 +1,42 @@
-// https://stackoverflow.com/questions/68424114/next-js-how-to-fetch-localstorage-data-before-client-side-rendering
-// 解决 nextJS 无法获取初始localstorage问题
+import { useEffect, useState } from "react";
 
-import { useEffect, useState } from 'react';
-import { isSSR } from '@/utils/is';
+type CacheKey =
+  | "token"
+  | "user"
+  | "loginParams"
+  | "userRole"
+  | "arcoLang"
+  | "arcoTheme";
 
 const getDefaultStorage = (key) => {
-  if (!isSSR) {
-    return localStorage.getItem(key);
-  } else {
-    return undefined;
-  }
+  return localStorage.getItem(key);
 };
 
+const prefixKey = "admin_";
+
 function useStorage(
-  key: string,
+  key: CacheKey,
   defaultValue?: string
 ): [string, (string) => void, () => void] {
+  const realKey = prefixKey + key;
+
   const [storedValue, setStoredValue] = useState(
-    getDefaultStorage(key) || defaultValue
+    getDefaultStorage(realKey) || defaultValue
   );
 
   const setStorageValue = (value: string) => {
-    if (!isSSR) {
-      localStorage.setItem(key, value);
-      if (value !== storedValue) {
-        setStoredValue(value);
-      }
+    localStorage.setItem(realKey, value);
+    if (value !== storedValue) {
+      setStoredValue(value);
     }
   };
 
   const removeStorage = () => {
-    if (!isSSR) {
-      localStorage.removeItem(key);
-    }
+    localStorage.removeItem(realKey);
   };
 
   useEffect(() => {
-    const storageValue = localStorage.getItem(key);
+    const storageValue = localStorage.getItem(realKey);
     if (storageValue) {
       setStoredValue(storageValue);
     }
