@@ -1,4 +1,4 @@
-import { storeGetItem } from "./useStorage";
+import { storeGetItem } from "../hooks/useStorage";
 // 仅用于线上预览，实际使用中可以将此逻辑删除
 import qs from "query-string";
 

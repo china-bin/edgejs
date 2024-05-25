@@ -15,7 +15,7 @@ import Navbar from './components/NavBar';
 import Footer from './components/Footer';
 import useRoute, { IRoute } from '@/routes';
 import { isArray } from './utils/cutil';
-import useLocale from './utils/useLocale';
+import useLocale from './hooks/useLocale';
 import {getUrlParams} from './utils/cutil';
 import lazyload from './utils/lazyload';
 import { GlobalState } from './store';

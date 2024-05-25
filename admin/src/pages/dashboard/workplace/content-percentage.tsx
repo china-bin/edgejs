@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Card, Spin, Typography } from '@arco-design/web-react';
 import { DonutChart } from 'bizcharts';
 import axios from 'axios';
-import useLocale from '@/utils/useLocale';
+import useLocale from '@/hooks/useLocale';
 import locale from './locale';
 
 function PopularContent() {

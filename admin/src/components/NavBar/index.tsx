@@ -26,13 +26,13 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import { GlobalState } from "@/store";
 import { GlobalContext } from "@/context";
-import useLocale from "@/utils/useLocale";
+import useLocale from "@/hooks/useLocale";
 import Logo from "@/assets/logo.svg";
 import IconButton from "./IconButton";
 import Settings from "../Settings";
 import styles from "./style/index.module.less";
 import defaultLocale from "@/locale";
-import useStorage from "@/utils/useStorage";
+import useStorage from "@/hooks/useStorage";
 import { generatePermission } from "@/routes";
 
 function Navbar({ show }: { show: boolean }) {

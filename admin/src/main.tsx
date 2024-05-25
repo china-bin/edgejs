@@ -13,7 +13,7 @@ import PageLayout from "./layout";
 import { GlobalContext } from "./context";
 import Login from "./pages/login";
 import { checkLogin, changeTheme } from "./utils/cutil";
-import useStorage from "./utils/useStorage";
+import useStorage from "./hooks/useStorage";
 import "./mock";
 import baseApi from "@/api/base";
 const store = createStore(rootReducer);

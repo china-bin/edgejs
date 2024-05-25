@@ -2,7 +2,7 @@ import axios, { AxiosRequestConfig } from "axios";
 import config from "./config";
 import reqUtils from "./reqUtils";
 import { Message } from "@arco-design/web-react";
-import useStorage, { storeGetItem, storeSetItem } from "./useStorage";
+import useStorage, { storeGetItem, storeSetItem } from "../hooks/useStorage";
 
 function getToken() {
   return storeGetItem("token");

@@ -13,7 +13,7 @@ import {
   IconMobile,
   IconFire,
 } from '@arco-design/web-react/icon';
-import useLocale from '@/utils/useLocale';
+import useLocale from '@/hooks/useLocale';
 import locale from './locale';
 import styles from './style/shortcuts.module.less';
 
