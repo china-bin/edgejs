@@ -4,6 +4,7 @@ import { HonoContext, getCfProp, getDB } from '../../utils/helpers';
 import { LogicResponse } from '../../types';
 import { SQLiteSelect } from 'drizzle-orm/sqlite-core';
 import { genUUID, getCurDateStr, parseStrToNumArr } from '../../utils/ctuil';
+import { md5 } from 'js-md5';
 
 function withPagination<T extends SQLiteSelect>(qb: T, page: number, pageSize: number = 10) {
   return qb.limit(pageSize).offset((page - 1) * pageSize);
@@ -22,14 +23,14 @@ async function list(c: HonoContext): LogicResponse {
 
   const db = getDB(c);
 
-  const whereOptions = or(
+  const whereOptions = and(
     like(user.uid, `%${uid}%`).if(uid),
     like(user.username, `%${username}%`).if(username),
     and(
       gte(user.createAt, startTime + ' 00:00:00'),
       lte(user.createAt, endTime + ' 59:59:999')
-    )?.if(startTime && endTime)
-    // inArray(user.oauthType, oauthType)
+    )?.if(startTime && endTime),
+    oauthType.length ? inArray(user.oauthType, oauthType) : undefined
   );
 
   const list = await db
@@ -65,6 +66,7 @@ async function list(c: HonoContext): LogicResponse {
 async function add(c: HonoContext): LogicResponse {
   const body = await c.req.json();
   const username = body['username'];
+  const password = body['password'];
   const email = body['email'];
 
   const country = getCfProp(c, 'country');
@@ -81,6 +83,7 @@ async function add(c: HonoContext): LogicResponse {
 
   await db.insert(user).values({
     username,
+    password: md5(password),
     uid,
     email,
     country,

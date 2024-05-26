@@ -2,7 +2,7 @@ import { Context, MiddlewareHandler } from 'hono';
 import { getCookie } from 'hono/cookie';
 import { HTTPException } from 'hono/http-exception';
 import { sign, verify } from 'hono/jwt';
-import { HonoContext } from '../utils/helpers';
+import { HonoContext, onHttpExpcetion } from '../utils/helpers';
 
 export type AdminPayload = {
   userId: number;
@@ -10,31 +10,14 @@ export type AdminPayload = {
   exp: number;
 };
 
-function unauthorizedResponse(opts: any) {
-  return new Response('Unauthorized', {
-    status: 401,
-    statusText: opts.statusText,
-    headers: {
-      'WWW-Authenticate': `Bearer realm="${opts.ctx.req.url}",error="${opts.error}",error_description="${opts.errDescription}"`,
-    },
-  });
-}
-
 function noTokenLogic(ctx: Context, notAuthPaths: string[]) {
   const reqPath = ctx.req.path;
   console.log('reqPath', reqPath);
   if (notAuthPaths.includes(reqPath)) {
     // 未登录用户也可以访问
   } else {
-    const errDescription = 'no authorization included in request';
-    throw new HTTPException(401, {
-      message: errDescription,
-      res: unauthorizedResponse({
-        ctx,
-        error: 'invalid_request',
-        errDescription,
-      }),
-    });
+    // no authorization included in request
+    return onHttpExpcetion(401, 'Unauthorized');
   }
 }
 
@@ -50,15 +33,8 @@ export const adminJwtAuth = (options: {
     if (credentials) {
       const parts = credentials.split(/\s+/);
       if (parts.length !== 2) {
-        const errDescription = 'invalid credentials structure';
-        throw new HTTPException(401, {
-          message: errDescription,
-          res: unauthorizedResponse({
-            ctx,
-            error: 'invalid_request',
-            errDescription,
-          }),
-        });
+        // invalid credentials structure'
+        return onHttpExpcetion(401, 'Unauthorized');
       } else {
         token = parts[1];
       }
@@ -77,16 +53,8 @@ export const adminJwtAuth = (options: {
       }
 
       if (!payload) {
-        throw new HTTPException(401, {
-          message: 'Unauthorized',
-          res: unauthorizedResponse({
-            ctx,
-            error: 'invalid_token',
-            statusText: 'Unauthorized',
-            errDescription: 'token verification failure',
-          }),
-          cause,
-        });
+        // token verification failure
+        return onHttpExpcetion(401, 'Unauthorized');
       }
 
       // 到达缓存时间通过响应头刷新token

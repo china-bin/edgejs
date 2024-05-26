@@ -128,6 +128,16 @@ export default function DetailModal({
             <Input readOnly={inputReadOnly} placeholder="" />
           </FormItem>
         )}
+
+        {["add"].includes(detailType) && (
+          <FormItem
+            label={t["searchTable.columns.password"]}
+            field="password"
+            rules={[{ required: true }]}
+          >
+            <Input readOnly={inputReadOnly} placeholder="" />
+          </FormItem>
+        )}
       </Form>
     </Modal>
   );
