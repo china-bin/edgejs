@@ -15,7 +15,6 @@ export function getColumns(
     {
       title: t["searchTable.columns.id"],
       dataIndex: "id",
-      render: (value) => <Text copyable>{value}</Text>,
     },
     {
       title: t["searchTable.columns.uid"],

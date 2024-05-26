@@ -28,6 +28,7 @@ function SearchTable() {
   const tableCallback = async (record, type) => {
     console.log(record, type);
     if (type == "view") {
+      setDetailId(record.id);
       showDetialModal("look");
     }
   };
@@ -47,6 +48,7 @@ function SearchTable() {
 
   const [dtailVisiable, setDetailVisiable] = useState(false);
   const [detailType, setDetailType] = useState<ModelDetailType>("add");
+  const [detailId, setDetailId] = useState(0);
   function showDetialModal(type: ModelDetailType) {
     setDetailType(type);
     setDetailVisiable(true);
@@ -136,6 +138,7 @@ function SearchTable() {
         fetchData={fetchData}
         visible={dtailVisiable}
         detailType={detailType}
+        detailId={detailId}
         setVisible={setDetailVisiable}
       />
     </Card>

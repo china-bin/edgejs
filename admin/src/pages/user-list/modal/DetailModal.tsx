@@ -17,10 +17,12 @@ const FormItem = Form.Item;
 export default function DetailModal({
   visible,
   detailType,
+  detailId,
   setVisible,
   fetchData,
 }: {
   detailType: ModelDetailType;
+  detailId: number;
   visible: boolean;
   setVisible: Function;
   fetchData: Function;
@@ -43,13 +45,16 @@ export default function DetailModal({
 
     if (detailType == "look") {
       setInputReadOnly(true);
-      userApi.detail({ id: 1 }).then((res) => {
-        form.setFieldsValue(res.info);
-      });
     } else {
       setInputReadOnly(false);
     }
   }, [detailType]);
+
+  useEffect(() => {
+    userApi.detail({ id: detailId }).then((res) => {
+      form.setFieldsValue(res.info);
+    });
+  }, [detailId]);
 
   function onOk() {
     form

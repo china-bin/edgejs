@@ -24,8 +24,8 @@ app.post('/add', async (c) => {
   return respSuccess(c, result.data);
 });
 
-app.get('/detail', async (c) => {
-  const result = await apptypeLogic.add(c);
+app.post('/edit', async (c) => {
+  const result = await apptypeLogic.edit(c);
   if (!result.state) {
     return respFail(c, result.msg);
   }

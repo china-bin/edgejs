@@ -18,7 +18,7 @@ import "./mock";
 import { getColumns } from "./constants";
 import DetailModal from "./modal/DetailModal";
 import { ModelDetailType } from "@/types";
-import userApi from "@/api/user";
+import apptypeApi from "@/api/apptype";
 
 const { Title } = Typography;
 
@@ -26,9 +26,10 @@ function SearchTable() {
   const t = useLocale(locale);
 
   const tableCallback = async (record, type) => {
-    console.log(record, type);
-    if (type == "view") {
-      showDetialModal("look");
+    console.log("tableCallback",record, type);
+    if (type == "edit") {
+      setDetailData(record);
+      showDetialModal("edit");
     }
   };
 
@@ -47,6 +48,7 @@ function SearchTable() {
 
   const [dtailVisiable, setDetailVisiable] = useState(false);
   const [detailType, setDetailType] = useState<ModelDetailType>("add");
+  const [detailData, setDetailData] = useState({});
   function showDetialModal(type: ModelDetailType) {
     setDetailType(type);
     setDetailVisiable(true);
@@ -60,7 +62,7 @@ function SearchTable() {
     const { current, pageSize } = pagination;
     setLoading(true);
 
-    userApi
+    apptypeApi
       .list({
         page: current,
         pageSize,
@@ -93,18 +95,11 @@ function SearchTable() {
     setFormParams(params);
   }
 
-
   return (
     <Card>
-      <Title heading={6}>{t["menu.list.searchTable"]}</Title>
+      <Title heading={6}></Title>
       <SearchForm onSearch={handleSearch} />
-      <PermissionWrapper
-        requiredPermissions={
-          [
-            // { resource: 'menu.list.searchTable', actions: ['write'] },
-          ]
-        }
-      >
+      <PermissionWrapper requiredPermissions={[]}>
         <div className={styles["button-group"]}>
           <Space>
             <Button
@@ -114,13 +109,7 @@ function SearchTable() {
             >
               {t["searchTable.operations.add"]}
             </Button>
-            {/* <Button>{t["searchTable.operations.upload"]}</Button> */}
           </Space>
-          {/* <Space>
-            <Button icon={<IconDownload />}>
-              {t["searchTable.operation.download"]}
-            </Button>
-          </Space> */}
         </div>
       </PermissionWrapper>
       <Table
@@ -136,6 +125,7 @@ function SearchTable() {
         fetchData={fetchData}
         visible={dtailVisiable}
         detailType={detailType}
+        detailData={detailData}
         setVisible={setDetailVisiable}
       />
     </Card>

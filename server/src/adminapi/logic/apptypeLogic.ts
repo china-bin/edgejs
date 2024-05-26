@@ -4,13 +4,13 @@ import { HonoContext, getCfProp, getDB } from '../../utils/helpers';
 import { LogicResponse } from '../../types';
 import { SQLiteSelect } from 'drizzle-orm/sqlite-core';
 import { genUUID, getCurDateStr, parseStrToNumArr } from '../../utils/ctuil';
-import { md5 } from 'js-md5';
 
 async function list(c: HonoContext): LogicResponse {
   const params = c.req.query();
 
   const page = ~~params['page'];
   const pageSize = ~~params['pageSize'];
+  const name = params['name'];
   const apptypeKey = params['apptypeKey'];
   const startTime = params['startTime'];
   const endTime = params['endTime'];
@@ -19,6 +19,7 @@ async function list(c: HonoContext): LogicResponse {
 
   const whereOptions = and(
     like(apptype.apptypeKey, `%${apptypeKey}%`).if(apptypeKey),
+    like(apptype.name, `%${name}%`).if(name),
     and(
       gte(apptype.createAt, startTime + ' 00:00:00'),
       lte(apptype.createAt, endTime + ' 59:59:999')
@@ -29,6 +30,8 @@ async function list(c: HonoContext): LogicResponse {
     .select({
       id: apptype.id,
       name: apptype.name,
+      apptypeKey: apptype.apptypeKey,
+      createAt: apptype.createAt,
     })
     .from(apptype)
     .where(whereOptions)
@@ -52,11 +55,13 @@ async function list(c: HonoContext): LogicResponse {
 async function add(c: HonoContext): LogicResponse {
   const body = await c.req.json();
   const name = body['name'];
+  const apptypeKey = body['apptypeKey'];
 
   const db = getDB(c);
 
   await db.insert(apptype).values({
     name,
+    apptypeKey,
   });
 
   return {
@@ -68,7 +73,21 @@ async function add(c: HonoContext): LogicResponse {
   };
 }
 
-async function detail(c: HonoContext): LogicResponse {
+async function edit(c: HonoContext): LogicResponse {
+  const body = await c.req.json();
+  const id = body['id'];
+  const name = body['name'];
+  const apptypeKey = body['apptypeKey'];
+
+  const db = getDB(c);
+  await db
+    .update(apptype)
+    .set({
+      name: name,
+      apptypeKey: apptypeKey,
+    })
+    .where(eq(apptype.id, id));
+
   return {
     state: true,
     msg: '',
@@ -78,5 +97,5 @@ async function detail(c: HonoContext): LogicResponse {
 export default {
   list,
   add,
-  detail,
+  edit,
 };

@@ -34,9 +34,6 @@ function SearchForm(props: {
       values.endTime = values.createAt[1];
       delete values.createAt;
     }
-    if (values.oauthType) {
-      values.oauthType = values.oauthType.join(",");
-    }
 
     props.onSearch(values);
   };
@@ -59,34 +56,21 @@ function SearchForm(props: {
       >
         <Row gutter={24}>
           <Col span={colSpan}>
-            <Form.Item label={t["searchTable.columns.uid"]} field="uid">
-              <Input placeholder={t["searchForm.uid.placeholder"]} allowClear />
-            </Form.Item>
-          </Col>
-          <Col span={colSpan}>
-            <Form.Item
-              label={t["searchTable.columns.username"]}
-              field="username"
-            >
+            <Form.Item label={t["searchTable.columns.name"]} field="name">
               <Input
                 allowClear
-                placeholder={t["searchForm.username.placeholder"]}
+                placeholder={t["searchForm.name.placeholder"]}
               />
             </Form.Item>
           </Col>
           <Col span={colSpan}>
             <Form.Item
-              label={t["searchTable.columns.oauthType"]}
-              field="oauthType"
+              label={t["searchTable.columns.apptypeKey"]}
+              field="apptypeKey"
             >
-              <Select
-                placeholder={t["searchForm.all.placeholder"]}
-                options={OauthType.map((item, index) => ({
-                  label: item,
-                  value: index,
-                }))}
-                mode="multiple"
+              <Input
                 allowClear
+                placeholder={t["searchForm.apptypeKey.placeholder"]}
               />
             </Form.Item>
           </Col>

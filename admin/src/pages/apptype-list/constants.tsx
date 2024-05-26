@@ -15,41 +15,17 @@ export function getColumns(
     {
       title: t["searchTable.columns.id"],
       dataIndex: "id",
+    },
+    {
+      title: t["searchTable.columns.name"],
+      dataIndex: "name",
+    },
+    {
+      title: t["searchTable.columns.apptypeKey"],
+      dataIndex: "apptypeKey",
       render: (value) => <Text copyable>{value}</Text>,
     },
-    {
-      title: t["searchTable.columns.uid"],
-      dataIndex: "uid",
-      render: (value) => <Text copyable>{value}</Text>,
-    },
-    {
-      title: t["searchTable.columns.username"],
-      dataIndex: "username",
-    },
-    {
-      title: t["searchTable.columns.avatar"],
-      dataIndex: "avatar",
-      render: (value) => (
-        <div>
-          <Image width={50} src={value} />
-        </div>
-      ),
-    },
-    {
-      title: t["searchTable.columns.oauthType"],
-      dataIndex: "oauthType",
-      render: (value) => {
-        return OauthType[value];
-      },
-    },
-    {
-      title: t["searchTable.columns.country"],
-      dataIndex: "country",
-    },
-    {
-      title: t["searchTable.columns.city"],
-      dataIndex: "city",
-    },
+
     {
       title: t["searchTable.columns.createAt"],
       dataIndex: "createAt",
@@ -63,9 +39,9 @@ export function getColumns(
         <Button
           type="text"
           size="small"
-          onClick={() => callback(record, "view")}
+          onClick={() => callback(record, "edit")}
         >
-          {t["searchTable.columns.operations.view"]}
+          {t["searchTable.columns.operations.edit"]}
         </Button>
       ),
     },

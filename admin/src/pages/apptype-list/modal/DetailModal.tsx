@@ -11,16 +11,18 @@ import { IconPlus } from "@arco-design/web-react/icon";
 import React, { useEffect, useState } from "react";
 import locale from "../locale";
 import { ModelDetailType } from "@/types";
-import userApi from "@/api/user";
+import apptypeApi from "@/api/apptype";
 const FormItem = Form.Item;
 
 export default function DetailModal({
   visible,
   detailType,
+  detailData,
   setVisible,
   fetchData,
 }: {
   detailType: ModelDetailType;
+  detailData: any;
   visible: boolean;
   setVisible: Function;
   fetchData: Function;
@@ -34,11 +36,11 @@ export default function DetailModal({
 
   useEffect(() => {
     if (detailType == "add") {
-      setTtile("添加用户");
+      setTtile("添加产品");
     } else if (detailType == "edit") {
-      setTtile("编辑用户");
+      setTtile("编辑产品");
     } else if (detailType == "look") {
-      setTtile("查看用户");
+      setTtile("查看产品");
     }
 
     if (detailType == "look") {
@@ -48,6 +50,10 @@ export default function DetailModal({
     }
   }, [detailType]);
 
+  useEffect(() => {
+    form.setFieldsValue(detailData);
+  }, [detailData]);
+
   function onOk() {
     form
       .validate()
@@ -56,7 +62,7 @@ export default function DetailModal({
 
         if (detailType == "add") {
           setConfirmLoading(true);
-          userApi
+          apptypeApi
             .add(res)
             .then((res) => {
               Message.info("添加成功");
@@ -67,6 +73,15 @@ export default function DetailModal({
             .finally(() => {
               setConfirmLoading(false);
             });
+        } else if (detailType == "edit") {
+          const params = {
+            ...res,
+            id: detailData.id,
+          };
+          apptypeApi.edit(params).then(() => {
+            Message.info("编辑成功");
+            fetchData();
+          });
         }
       })
       .catch((err) => {
@@ -102,42 +117,19 @@ export default function DetailModal({
         }}
       >
         <FormItem
-          label={t["searchTable.columns.username"]}
-          field="username"
+          label={t["searchTable.columns.name"]}
+          field="name"
           rules={[{ required: true }]}
         >
           <Input readOnly={inputReadOnly} placeholder="" />
         </FormItem>
-        {["edit"].includes(detailType) && (
-          <FormItem
-            label={t["searchTable.columns.uid"]}
-            field="uid"
-            disabled={true}
-            rules={[{ required: true }]}
-          >
-            <Input readOnly={inputReadOnly} placeholder="" />
-          </FormItem>
-        )}
-
-        {["look", "add"].includes(detailType) && (
-          <FormItem
-            label={t["searchTable.columns.email"]}
-            field="email"
-            rules={[{ required: true }]}
-          >
-            <Input readOnly={inputReadOnly} placeholder="" />
-          </FormItem>
-        )}
-
-        {["add"].includes(detailType) && (
-          <FormItem
-            label={t["searchTable.columns.password"]}
-            field="password"
-            rules={[{ required: true }]}
-          >
-            <Input readOnly={inputReadOnly} placeholder="" />
-          </FormItem>
-        )}
+        <FormItem
+          label={t["searchTable.columns.apptypeKey"]}
+          field="apptypeKey"
+          rules={[{ required: true }]}
+        >
+          <Input readOnly={inputReadOnly} placeholder="" />
+        </FormItem>
       </Form>
     </Modal>
   );
