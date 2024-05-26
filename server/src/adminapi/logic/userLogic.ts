@@ -1,9 +1,9 @@
-import { and, eq, like, or } from 'drizzle-orm';
+import { and, eq, gt, gte, inArray, like, lt, lte, or, count } from 'drizzle-orm';
 import { admin, user } from '../../db/schema';
 import { HonoContext, getCfProp, getDB } from '../../utils/helpers';
 import { LogicResponse } from '../../types';
 import { SQLiteSelect } from 'drizzle-orm/sqlite-core';
-import { genUUID } from '../../utils/ctuil';
+import { genUUID, getCurDateStr, parseStrToNumArr } from '../../utils/ctuil';
 
 function withPagination<T extends SQLiteSelect>(qb: T, page: number, pageSize: number = 10) {
   return qb.limit(pageSize).offset((page - 1) * pageSize);
@@ -16,10 +16,23 @@ async function list(c: HonoContext): LogicResponse {
   const pageSize = ~~params['pageSize'];
   const uid = params['uid'];
   const username = params['username'];
+  const startTime = params['startTime'];
+  const endTime = params['endTime'];
+  let oauthType = parseStrToNumArr(params['oauthType']);
 
   const db = getDB(c);
 
-  const dynamicQuery = db
+  const whereOptions = or(
+    like(user.uid, `%${uid}%`).if(uid),
+    like(user.username, `%${username}%`).if(username),
+    and(
+      gte(user.createAt, startTime + ' 00:00:00'),
+      lte(user.createAt, endTime + ' 59:59:999')
+    )?.if(startTime && endTime)
+    // inArray(user.oauthType, oauthType)
+  );
+
+  const list = await db
     .select({
       id: user.id,
       uid: user.uid,
@@ -31,17 +44,19 @@ async function list(c: HonoContext): LogicResponse {
       createAt: user.createAt,
     })
     .from(user)
-    .where(or(like(user.uid, uid).if(uid), like(user.username, username).if(username)))
-    .$dynamic();
+    .where(whereOptions)
+    .limit(pageSize)
+    .offset((page - 1) * pageSize);
 
-  const list = await withPagination(dynamicQuery, page, pageSize);
+  const totalObj = await db.select({ count: count() }).from(user).where(whereOptions);
+  const totalNum = totalObj[0].count;
 
   return {
     state: true,
     msg: '',
     data: {
       list: list,
-      total: 10,
+      total: totalNum,
       params,
     },
   };

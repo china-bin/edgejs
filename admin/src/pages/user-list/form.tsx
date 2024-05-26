@@ -34,6 +34,9 @@ function SearchForm(props: {
       values.endTime = values.createAt[1];
       delete values.createAt;
     }
+    if (values.oauthType) {
+      values.oauthType = values.oauthType.join(",");
+    }
 
     props.onSearch(values);
   };
