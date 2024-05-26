@@ -105,9 +105,22 @@ async function add(c: HonoContext): LogicResponse {
 }
 
 async function detail(c: HonoContext): LogicResponse {
+  const params = c.req.query();
+
+  const id = ~~params['id'];
+
+  const db = getDB(c);
+
+  const userInfo = await db.query.user.findFirst({
+    where: eq(user.id, id),
+  });
+
   return {
     state: true,
     msg: '',
+    data: {
+      info: userInfo,
+    },
   };
 }
 

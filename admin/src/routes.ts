@@ -1,5 +1,5 @@
-import auth, { AuthParams } from '@/utils/authentication';
-import { useEffect, useMemo, useState } from 'react';
+import auth, { AuthParams } from "@/utils/authentication";
+import { useEffect, useMemo, useState } from "react";
 
 export type IRoute = AuthParams & {
   name: string;
@@ -13,22 +13,22 @@ export type IRoute = AuthParams & {
 
 export const routes: IRoute[] = [
   {
-    name: 'menu.dashboard',
-    key: 'dashboard',
+    name: "menu.dashboard",
+    key: "dashboard",
     children: [
       {
-        name: 'menu.dashboard.workplace',
-        key: 'dashboard/workplace',
+        name: "menu.dashboard.workplace",
+        key: "dashboard/workplace",
       },
     ],
   },
   {
-    name: '例子',
-    key: 'example',
+    name: "用户列表",
+    key: "user-list",
   },
   {
-    name: '用户列表',
-    key: 'user-list',
+    name: "产品列表",
+    key: "apptype-list",
   },
 ];
 
@@ -44,7 +44,7 @@ export const getName = (path: string, routes) => {
 };
 
 export const generatePermission = (role: string) => {
-  const actions = role === 'admin' ? ['*'] : ['read'];
+  const actions = role === "admin" ? ["*"] : ["read"];
   const result = {};
   routes.forEach((item) => {
     if (item.children) {
@@ -98,7 +98,7 @@ const useRoute = (userPermission): [IRoute[], string] => {
       const firstRoute = first?.children?.[0]?.key || first.key;
       return firstRoute;
     }
-    return '';
+    return "";
   }, [permissionRoute]);
 
   return [permissionRoute, defaultRoute];

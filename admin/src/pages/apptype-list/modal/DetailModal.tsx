@@ -43,9 +43,6 @@ export default function DetailModal({
 
     if (detailType == "look") {
       setInputReadOnly(true);
-      userApi.detail({ id: 1 }).then((res) => {
-        form.setFieldsValue(res.info);
-      });
     } else {
       setInputReadOnly(false);
     }

@@ -2,12 +2,12 @@ import { Hono } from 'hono';
 import { Context } from '../../types';
 import { getDB } from '../../utils/helpers';
 import { respFail, respSuccess } from '../../utils/resp';
-import userLogic from '../logic/userLogic';
+import apptypeLogic from '../logic/apptypeLogic';
 
 const app = new Hono<Context>();
 
 app.get('/list', async (c) => {
-  const result = await userLogic.list(c);
+  const result = await apptypeLogic.list(c);
   if (!result.state) {
     return respFail(c, result.msg);
   }
@@ -16,7 +16,7 @@ app.get('/list', async (c) => {
 });
 
 app.post('/add', async (c) => {
-  const result = await userLogic.add(c);
+  const result = await apptypeLogic.add(c);
   if (!result.state) {
     return respFail(c, result.msg);
   }
@@ -25,7 +25,7 @@ app.post('/add', async (c) => {
 });
 
 app.get('/detail', async (c) => {
-  const result = await userLogic.detail(c);
+  const result = await apptypeLogic.add(c);
   if (!result.state) {
     return respFail(c, result.msg);
   }

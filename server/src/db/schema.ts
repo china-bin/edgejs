@@ -1,6 +1,7 @@
 import { sql } from 'drizzle-orm';
 import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 
+// 用户
 export const user = sqliteTable('user', {
   id: integer('id').primaryKey(),
   uid: text('uid').unique(), // 用户uid
@@ -8,7 +9,7 @@ export const user = sqliteTable('user', {
   avatar: text('avatar'), // 头像地址
   username: text('username'),
   password: text('password'),
-  appType: text('app_type'),
+  apptype: text('apptype'),
   oauthType: integer('oauth_type').default(0), //  1=google用户
   openid: text('openid'), // oauth登录的唯一标识
   country: text('country'), // 国家
@@ -20,7 +21,14 @@ export const user = sqliteTable('user', {
   postalCode: text('postal_code'), // 邮编
   remark: text('remark'), // 备注
   mobile: text('mobile'), // 手机号
-  platform: text('platform'), // 系统平台 android ios pc h5
+  platform: text('platform'), // 系统平台 android ios window mac unknow
+  createAt: text('create_at').default(sql`(CURRENT_TIMESTAMP)`),
+});
+
+export const apptype = sqliteTable('apptype', {
+  id: integer('id').primaryKey(),
+  name: text('name'), // 产品名称
+  apptypeKey: text('apptype_key').unique(), // 产品key
   createAt: text('create_at').default(sql`(CURRENT_TIMESTAMP)`),
 });
 

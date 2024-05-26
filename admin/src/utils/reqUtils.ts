@@ -1,5 +1,6 @@
 import { md5 } from "js-md5";
 import config from "./config";
+import { getPlatform } from "./cutil";
 
 function formatGetUri(obj: Record<string, string>) {
   const params: string[] = [];
@@ -25,6 +26,7 @@ function requestMd5Params(params: any) {
     // @ts-ignore
     timestrap: parseInt(Date.now() / 1000),
     version: config.version,
+    platform: getPlatform(),
   });
 
   console.log("requestMd5Params", params);
