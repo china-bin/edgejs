@@ -18,10 +18,12 @@ export default function DetailModal({
   visible,
   detailType,
   setVisible,
+  fetchData,
 }: {
   detailType: ModelDetailType;
   visible: boolean;
   setVisible: Function;
+  fetchData: Function;
 }) {
   const t = useLocale(locale);
 
@@ -59,6 +61,7 @@ export default function DetailModal({
             .then((res) => {
               Message.info("添加成功");
               form.clearFields();
+              fetchData();
               setVisible(false);
             })
             .finally(() => {

@@ -1,11 +1,9 @@
-import { eq } from 'drizzle-orm';
+import { and, eq, like, or } from 'drizzle-orm';
 import { admin, user } from '../../db/schema';
-import { DrizzleDB, HonoContext, getCfProp, getDB } from '../../utils/helpers';
-import { respSuccess } from '../../utils/resp';
-import { Context, LogicResponse } from '../../types';
-import { sign } from 'hono/jwt';
-import { genAdminJwtToken } from '../../midleware/adminJwtAuth';
+import { HonoContext, getCfProp, getDB } from '../../utils/helpers';
+import { LogicResponse } from '../../types';
 import { SQLiteSelect } from 'drizzle-orm/sqlite-core';
+import { genUUID } from '../../utils/ctuil';
 
 function withPagination<T extends SQLiteSelect>(qb: T, page: number, pageSize: number = 10) {
   return qb.limit(pageSize).offset((page - 1) * pageSize);
@@ -16,6 +14,8 @@ async function list(c: HonoContext): LogicResponse {
 
   const page = ~~params['page'];
   const pageSize = ~~params['pageSize'];
+  const uid = params['uid'];
+  const username = params['username'];
 
   const db = getDB(c);
 
@@ -31,6 +31,7 @@ async function list(c: HonoContext): LogicResponse {
       createAt: user.createAt,
     })
     .from(user)
+    .where(or(like(user.uid, uid).if(uid), like(user.username, username).if(username)))
     .$dynamic();
 
   const list = await withPagination(dynamicQuery, page, pageSize);
@@ -59,10 +60,13 @@ async function add(c: HonoContext): LogicResponse {
   const timezone = getCfProp(c, 'timezone');
   const postalCode = getCfProp(c, 'postalCode');
 
+  const uid = genUUID();
+
   const db = getDB(c);
 
   await db.insert(user).values({
     username,
+    uid,
     email,
     country,
     city,

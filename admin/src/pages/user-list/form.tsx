@@ -28,6 +28,13 @@ function SearchForm(props: {
 
   const handleSubmit = () => {
     const values = form.getFieldsValue();
+    console.log("values", values);
+    if (values.createAt && values.createAt.length >= 2) {
+      values.startTime = values.createAt[0];
+      values.endTime = values.createAt[1];
+      delete values.createAt;
+    }
+
     props.onSearch(values);
   };
 
@@ -49,15 +56,18 @@ function SearchForm(props: {
       >
         <Row gutter={24}>
           <Col span={colSpan}>
-            <Form.Item label={t["searchTable.columns.id"]} field="id">
-              <Input placeholder={t["searchForm.id.placeholder"]} allowClear />
+            <Form.Item label={t["searchTable.columns.uid"]} field="uid">
+              <Input placeholder={t["searchForm.uid.placeholder"]} allowClear />
             </Form.Item>
           </Col>
           <Col span={colSpan}>
-            <Form.Item label={t["searchTable.columns.name"]} field="name">
+            <Form.Item
+              label={t["searchTable.columns.username"]}
+              field="username"
+            >
               <Input
                 allowClear
-                placeholder={t["searchForm.name.placeholder"]}
+                placeholder={t["searchForm.username.placeholder"]}
               />
             </Form.Item>
           </Col>
@@ -79,8 +89,8 @@ function SearchForm(props: {
           </Col>
           <Col span={colSpan}>
             <Form.Item
-              label={t["searchTable.columns.createdTime"]}
-              field="createdTime"
+              label={t["searchTable.columns.createAt"]}
+              field="createAt"
             >
               <DatePicker.RangePicker
                 allowClear

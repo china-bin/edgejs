@@ -93,6 +93,7 @@ function SearchTable() {
     setFormParams(params);
   }
 
+
   return (
     <Card>
       <Title heading={6}>{t["menu.list.searchTable"]}</Title>
@@ -132,6 +133,7 @@ function SearchTable() {
       />
 
       <DetailModal
+        fetchData={fetchData}
         visible={dtailVisiable}
         detailType={detailType}
         setVisible={setDetailVisiable}
