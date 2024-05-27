@@ -19,17 +19,21 @@ import { getColumns } from "./constants";
 import DetailModal from "./modal/DetailModal";
 import { ModelDetailType } from "@/types";
 import userApi from "@/api/user";
+import apptypeApi from "@/api/apptypeApi";
 
 const { Title } = Typography;
 
 function SearchTable() {
   const t = useLocale(locale);
 
-  const tableCallback = async (record, type) => {
+  const tableCallback = async (record, type: ModelDetailType) => {
     console.log(record, type);
-    if (type == "view") {
+    if (type == "look") {
       setDetailId(record.id);
       showDetialModal("look");
+    } else if (type == "edit") {
+      setDetailId(record.id);
+      showDetialModal("edit");
     }
   };
 
@@ -49,6 +53,19 @@ function SearchTable() {
   const [dtailVisiable, setDetailVisiable] = useState(false);
   const [detailType, setDetailType] = useState<ModelDetailType>("add");
   const [detailId, setDetailId] = useState(0);
+  const [apptypeList, setApptypeList] = useState([]);
+
+  useEffect(() => {
+    apptypeApi
+      .list({
+        page: 1,
+        pageSize: 99999,
+      })
+      .then((res) => {
+        setApptypeList(res.list);
+      });
+  }, []);
+
   function showDetialModal(type: ModelDetailType) {
     setDetailType(type);
     setDetailVisiable(true);
@@ -95,11 +112,10 @@ function SearchTable() {
     setFormParams(params);
   }
 
-
   return (
     <Card>
       <Title heading={6}>{t["menu.list.searchTable"]}</Title>
-      <SearchForm onSearch={handleSearch} />
+      <SearchForm apptypeList={apptypeList} onSearch={handleSearch} />
       <PermissionWrapper
         requiredPermissions={
           [
@@ -135,6 +151,7 @@ function SearchTable() {
       />
 
       <DetailModal
+        apptypeList={apptypeList}
         fetchData={fetchData}
         visible={dtailVisiable}
         detailType={detailType}

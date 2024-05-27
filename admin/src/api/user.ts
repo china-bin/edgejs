@@ -8,14 +8,18 @@ function list(params) {
 function add(data) {
   return http.post("adminapi/user/add", data);
 }
-
 // 用户详情
 function detail(params) {
   return http.get("adminapi/user/detail", params);
+}
+// 编辑用户
+function edit(data) {
+  return http.post("adminapi/user/edit", data);
 }
 
 export default {
   list,
   add,
   detail,
+  edit
 };

@@ -18,7 +18,7 @@ import "./mock";
 import { getColumns } from "./constants";
 import DetailModal from "./modal/DetailModal";
 import { ModelDetailType } from "@/types";
-import apptypeApi from "@/api/apptype";
+import apptypeApi from "@/api/apptypeApi";
 
 const { Title } = Typography;
 

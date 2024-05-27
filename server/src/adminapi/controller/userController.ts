@@ -33,4 +33,13 @@ app.get('/detail', async (c) => {
   return respSuccess(c, result.data);
 });
 
+app.post('/edit', async (c) => {
+  const result = await userLogic.edit(c);
+  if (!result.state) {
+    return respFail(c, result.msg);
+  }
+
+  return respSuccess(c, result.data);
+});
+
 export default app;

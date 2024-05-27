@@ -11,7 +11,7 @@ import { IconPlus } from "@arco-design/web-react/icon";
 import React, { useEffect, useState } from "react";
 import locale from "../locale";
 import { ModelDetailType } from "@/types";
-import apptypeApi from "@/api/apptype";
+import apptypeApi from "@/api/apptypeApi";
 const FormItem = Form.Item;
 
 export default function DetailModal({

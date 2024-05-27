@@ -19,11 +19,13 @@ async function list(c: HonoContext): LogicResponse {
   const username = params['username'];
   const startTime = params['startTime'];
   const endTime = params['endTime'];
+  const apptype = params['apptype'];
   let oauthType = parseStrToNumArr(params['oauthType']);
 
   const db = getDB(c);
 
   const whereOptions = and(
+    eq(user.apptype, apptype).if(apptype),
     like(user.uid, `%${uid}%`).if(uid),
     like(user.username, `%${username}%`).if(username),
     and(
@@ -68,6 +70,7 @@ async function add(c: HonoContext): LogicResponse {
   const username = body['username'];
   const password = body['password'];
   const email = body['email'];
+  const apptype = body['apptype'];
 
   const country = getCfProp(c, 'country');
   const city = getCfProp(c, 'city');
@@ -86,6 +89,7 @@ async function add(c: HonoContext): LogicResponse {
     password: md5(password),
     uid,
     email,
+    apptype,
     country,
     city,
     latitude,
@@ -99,7 +103,7 @@ async function add(c: HonoContext): LogicResponse {
     state: true,
     msg: '',
     data: {
-      body,
+      // body,
     },
   };
 }
@@ -124,8 +128,38 @@ async function detail(c: HonoContext): LogicResponse {
   };
 }
 
+async function edit(c: HonoContext): LogicResponse {
+  const body = await c.req.json();
+  const username = body['username'];
+  const email = body['email'];
+  const uid = body['uid'];
+  const apptype = body['apptype'];
+  const id = body['id'];
+
+  const db = getDB(c);
+
+  await db
+    .update(user)
+    .set({
+      username,
+      email,
+      uid,
+      apptype,
+    })
+    .where(eq(user.id, id));
+
+  return {
+    state: true,
+    msg: '',
+    data: {
+      // body,
+    },
+  };
+}
+
 export default {
   list,
   add,
   detail,
+  edit,
 };

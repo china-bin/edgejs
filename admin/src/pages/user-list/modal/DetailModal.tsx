@@ -20,12 +20,14 @@ export default function DetailModal({
   detailId,
   setVisible,
   fetchData,
+  apptypeList,
 }: {
   detailType: ModelDetailType;
   detailId: number;
   visible: boolean;
   setVisible: Function;
   fetchData: Function;
+  apptypeList: any[];
 }) {
   const t = useLocale(locale);
 
@@ -56,25 +58,35 @@ export default function DetailModal({
     });
   }, [detailId]);
 
+  const operationByModalType = (body: any, type: ModelDetailType) => {
+    setConfirmLoading(true);
+    userApi[type](body)
+      .then((res) => {
+        Message.info("操作成功");
+        form.clearFields();
+        fetchData();
+        setVisible(false);
+      })
+      .finally(() => {
+        setConfirmLoading(false);
+      });
+  };
+
   function onOk() {
     form
       .validate()
       .then((res) => {
         console.log("res", res);
-
         if (detailType == "add") {
-          setConfirmLoading(true);
-          userApi
-            .add(res)
-            .then((res) => {
-              Message.info("添加成功");
-              form.clearFields();
-              fetchData();
-              setVisible(false);
-            })
-            .finally(() => {
-              setConfirmLoading(false);
-            });
+          operationByModalType(res, detailType);
+        } else if (detailType == "edit") {
+          operationByModalType(
+            {
+              ...res,
+              id: detailId,
+            },
+            detailType
+          );
         }
       })
       .catch((err) => {
@@ -110,32 +122,42 @@ export default function DetailModal({
         }}
       >
         <FormItem
+          label={t["searchTable.columns.apptype"]}
+          field="apptype"
+          rules={[{ required: true }]}
+        >
+          <Select
+            placeholder={t["searchForm.all.placeholder"]}
+            options={apptypeList.map((item, index) => ({
+              label: item.name,
+              value: item.apptypeKey,
+            }))}
+            allowClear
+          />
+        </FormItem>
+
+        <FormItem
           label={t["searchTable.columns.username"]}
           field="username"
           rules={[{ required: true }]}
         >
           <Input readOnly={inputReadOnly} placeholder="" />
         </FormItem>
-        {["edit"].includes(detailType) && (
-          <FormItem
-            label={t["searchTable.columns.uid"]}
-            field="uid"
-            disabled={true}
-            rules={[{ required: true }]}
-          >
-            <Input readOnly={inputReadOnly} placeholder="" />
-          </FormItem>
-        )}
+        <FormItem
+          label={t["searchTable.columns.uid"]}
+          field="uid"
+          rules={[{ required: true }]}
+        >
+          <Input readOnly={inputReadOnly} placeholder="" />
+        </FormItem>
 
-        {["look", "add"].includes(detailType) && (
-          <FormItem
-            label={t["searchTable.columns.email"]}
-            field="email"
-            rules={[{ required: true }]}
-          >
-            <Input readOnly={inputReadOnly} placeholder="" />
-          </FormItem>
-        )}
+        <FormItem
+          label={t["searchTable.columns.email"]}
+          field="email"
+          rules={[{ required: true }]}
+        >
+          <Input readOnly={inputReadOnly} placeholder="" />
+        </FormItem>
 
         {["add"].includes(detailType) && (
           <FormItem

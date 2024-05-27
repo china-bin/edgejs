@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import dayjs from "dayjs";
 import {
   Form,
@@ -14,12 +14,17 @@ import useLocale from "@/hooks/useLocale";
 import { IconRefresh, IconSearch } from "@arco-design/web-react/icon";
 import { OauthType } from "./constants";
 import styles from "./style/index.module.less";
+import apptypeApi from "@/api/apptypeApi";
 
 const { Row, Col } = Grid;
 const { useForm } = Form;
 
-function SearchForm(props: {
+function SearchForm({
+  onSearch,
+  apptypeList,
+}: {
   onSearch: (values: Record<string, any>) => void;
+  apptypeList: any[];
 }) {
   const { lang } = useContext(GlobalContext);
 
@@ -38,12 +43,12 @@ function SearchForm(props: {
       values.oauthType = values.oauthType.join(",");
     }
 
-    props.onSearch(values);
+    onSearch(values);
   };
 
   const handleReset = () => {
     form.resetFields();
-    props.onSearch({});
+    onSearch({});
   };
 
   const colSpan = lang === "zh-CN" ? 8 : 12;
@@ -86,6 +91,18 @@ function SearchForm(props: {
                   value: index,
                 }))}
                 mode="multiple"
+                allowClear
+              />
+            </Form.Item>
+          </Col>
+          <Col span={colSpan}>
+            <Form.Item label={t["searchTable.columns.apptype"]} field="apptype">
+              <Select
+                placeholder={t["searchForm.all.placeholder"]}
+                options={apptypeList.map((item, index) => ({
+                  label: item.name,
+                  value: item.apptypeKey,
+                }))}
                 allowClear
               />
             </Form.Item>

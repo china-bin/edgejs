@@ -2,6 +2,7 @@ import React from "react";
 import { Button, Typography, Image } from "@arco-design/web-react";
 import dayjs from "dayjs";
 import styles from "./style/index.module.less";
+import { ModelDetailType } from "@/types";
 
 const { Text } = Typography;
 
@@ -9,7 +10,7 @@ export const OauthType = ["无", "google登录"];
 
 export function getColumns(
   t: any,
-  callback: (record: Record<string, any>, type: string) => Promise<void>
+  callback: (record: Record<string, any>, type: ModelDetailType) => Promise<void>
 ) {
   return [
     {
@@ -59,13 +60,23 @@ export function getColumns(
       dataIndex: "operations",
       headerCellStyle: { paddingLeft: "15px" },
       render: (_, record) => (
-        <Button
-          type="text"
-          size="small"
-          onClick={() => callback(record, "view")}
-        >
-          {t["searchTable.columns.operations.view"]}
-        </Button>
+        <div>
+          <Button
+            type="text"
+            size="small"
+            onClick={() => callback(record, "look")}
+          >
+            {t["searchTable.columns.operations.look"]}
+          </Button>
+
+          <Button
+            type="text"
+            size="small"
+            onClick={() => callback(record, "edit")}
+          >
+            {t["searchTable.columns.operations.edit"]}
+          </Button>
+        </div>
       ),
     },
   ];
