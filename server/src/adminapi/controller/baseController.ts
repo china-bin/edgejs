@@ -23,6 +23,15 @@ app.get('/userInfo', async (c) => {
   return respSuccess(c, result.data);
 });
 
+// 修改个人用户信息
+app.post('/editUser', async (c) => {
+  const result = await baseLogic.editUser(c);
+  if (!result.state) {
+    return respFail(c, result.msg);
+  }
+  return respSuccess(c, result.data);
+});
+
 app.get('/index', async (c) => {
   return respSuccess(c, {}, 'adminapi');
 });

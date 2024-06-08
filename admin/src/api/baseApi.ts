@@ -9,7 +9,12 @@ function userInfo(params) {
   return http.get("adminapi/base/userInfo", params);
 }
 
+function editUser(data) {
+  return http.post("adminapi/base/editUser", data);
+}
+
 export default {
   login,
   userInfo,
+  editUser
 };

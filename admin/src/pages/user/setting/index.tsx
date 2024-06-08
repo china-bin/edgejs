@@ -21,7 +21,7 @@ function UserInfo() {
       <Card style={{ marginTop: '16px' }}>
         <Tabs activeTab={activeTab} onChange={setActiveTab} type="rounded">
           <Tabs.TabPane key="basic" title={t['userSetting.title.basicInfo']}>
-            <InfoForm loading={loading} />
+            <InfoForm userInfo={userInfo} loading={loading} />
           </Tabs.TabPane>
           <Tabs.TabPane key="security" title={t['userSetting.title.security']}>
             <Security />

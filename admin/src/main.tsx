@@ -14,7 +14,7 @@ import Login from "./pages/login";
 import { checkLogin, changeTheme } from "./utils/cutil";
 import useStorage from "./hooks/useStorage";
 import "./mock";
-import baseApi from "@/api/base";
+import baseApi from "@/api/baseApi";
 const store = createStore(rootReducer);
 
 function Index() {

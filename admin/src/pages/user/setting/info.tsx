@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import useLocale from "@/hooks/useLocale";
 import locale from "./locale";
 import { GlobalContext } from "@/context";
@@ -12,16 +12,30 @@ import {
   Message,
   Skeleton,
 } from "@arco-design/web-react";
+import baseApi from "@/api/baseApi";
 
-function InfoForm({ loading }: { loading?: boolean }) {
+function InfoForm({
+  loading,
+  userInfo = {},
+}: {
+  loading?: boolean;
+  userInfo: any;
+}) {
   const t = useLocale(locale);
   const [form] = Form.useForm();
   const { lang } = useContext(GlobalContext);
 
+  useEffect(() => {
+    console.log("userInfo", userInfo);
+    form.setFieldsValue(userInfo);
+  }, [userInfo]);
+
   const handleSave = async () => {
     try {
       await form.validate();
-      Message.success("userSetting.saveSuccess");
+      const formValues = form.getFieldsValue();
+      baseApi.editUser(formValues).then(() => {});
+      console.log("formValues", formValues);
     } catch (_) {}
   };
 
@@ -66,28 +80,22 @@ function InfoForm({ loading }: { loading?: boolean }) {
         )}
       </Form.Item>
       <Form.Item
-        label={t["userSetting.info.nickName"]}
-        field="nickName"
+        label={t["userSetting.info.nickname"]}
+        field="nickname"
         rules={[
           {
             required: true,
-            message: t["userSetting.info.nickName.placeholder"],
+            message: t["userSetting.info.nickname.placeholder"],
           },
         ]}
       >
         {loading ? (
           loadingNode()
         ) : (
-          <Input placeholder={t["userSetting.info.nickName.placeholder"]} />
+          <Input placeholder={t["userSetting.info.nickname.placeholder"]} />
         )}
       </Form.Item>
-      <Form.Item
-        label={t["userSetting.info.area"]}
-        field="rangeArea"
-        rules={[
-          { required: true, message: t["userSetting.info.area.placeholder"] },
-        ]}
-      >
+      <Form.Item label={t["userSetting.info.area"]} field="country">
         {loading ? (
           loadingNode()
         ) : (

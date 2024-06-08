@@ -14,7 +14,7 @@ import useStorage from "@/hooks/useStorage";
 import useLocale from "@/hooks/useLocale";
 import locale from "./locale";
 import styles from "./style/index.module.less";
-import baseApi from "@/api/base";
+import baseApi from "@/api/baseApi";
 
 export default function LoginForm() {
   const formRef = useRef<FormInstance>();

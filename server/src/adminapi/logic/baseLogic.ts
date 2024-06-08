@@ -58,7 +58,32 @@ async function userInfo(c: HonoContext): LogicResponse {
     data: data,
   };
 }
+
+async function editUser(c: HonoContext): LogicResponse {
+  const payload = c.get('jwtPayload');
+  const userId = payload.userId;
+
+  const body = await c.req.json();
+
+  const db = getDB(c);
+  await db
+    .update(admin)
+    .set({
+      email: body['email'],
+      nickname: body['nickname'],
+      country: body['country'],
+    })
+    .where(eq(admin.id, userId));
+
+  const data = {};
+  return {
+    state: true,
+    data: data,
+  };
+}
+
 export default {
   login,
   userInfo,
+  editUser,
 };
