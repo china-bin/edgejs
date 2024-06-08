@@ -16,6 +16,7 @@ export function genUUID() {
   return uuid;
 }
 
+// 字符串数组转换成number数组
 export function parseStrToNumArr(str: string): number[] {
   if (str) {
     let arr = str.split(',');
@@ -26,4 +27,23 @@ export function parseStrToNumArr(str: string): number[] {
   } else {
     return [];
   }
+}
+
+// ArrayBuffer 转 base64
+export function arrayBufferToBase64(buffer: ArrayBuffer) {
+  var binary = '';
+  var bytes = new Uint8Array(buffer);
+  var len = bytes.byteLength;
+  for (var i = 0; i < len; i++) {
+    binary += String.fromCharCode(bytes[i]);
+  }
+  // 对二进制字符串进行base64编码
+  return btoa(binary);
+}
+
+//  获取文件后缀
+export function getFileExt(fileName: string) {
+  const parts = fileName.split('.');
+  const extStr = parts.pop() || '';
+  return extStr.toLocaleLowerCase();
 }
