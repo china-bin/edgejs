@@ -30,6 +30,11 @@ export const routes: IRoute[] = [
     name: "产品列表",
     key: "apptype-list",
   },
+  {
+    name: "用户信息设置",
+    key: "user/setting",
+    ignore: true
+  },
 ];
 
 export const getName = (path: string, routes) => {

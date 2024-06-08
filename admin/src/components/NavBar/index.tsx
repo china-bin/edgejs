@@ -33,7 +33,8 @@ import Settings from "../Settings";
 import styles from "./style/index.module.less";
 import defaultLocale from "@/locale";
 import useStorage from "@/hooks/useStorage";
-import { generatePermission } from "@/routes";
+import useRoute, { generatePermission } from "@/routes";
+import { useHistory } from "react-router-dom";
 
 function Navbar({ show }: { show: boolean }) {
   const t = useLocale();
@@ -44,6 +45,7 @@ function Navbar({ show }: { show: boolean }) {
   const [token, setToken, removeToken] = useStorage("token");
 
   const { setLang, lang, theme, setTheme } = useContext(GlobalContext);
+  const history = useHistory();
 
   function logout() {
     removeToken();
@@ -53,6 +55,11 @@ function Navbar({ show }: { show: boolean }) {
   function onMenuItemClick(key) {
     if (key === "logout") {
       logout();
+    } else if (key == "setting") {
+      // 设置
+      history.push({
+        pathname: "/user/setting",
+      });
     } else {
       Message.info(`You clicked ${key}`);
     }
