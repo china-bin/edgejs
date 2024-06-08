@@ -77,4 +77,12 @@ export const http = {
   post<T = any>(url: string, data?: object): Promise<T> {
     return service.post(url, data);
   },
+
+  upload<T = any>(url: string, formData?: object): Promise<T> {
+    return service.post(url, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+  },
 };

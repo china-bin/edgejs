@@ -25,7 +25,7 @@ app.route('/api', api);
 app.use('/adminapi/*', (c, next) => {
   const jwtMiddleware = adminJwtAuth({
     secret: c.env.ADMAPI_JWT_SECRET,
-    notAuthPaths: ['/adminapi/base/login'],
+    notAuthPaths: ['/adminapi/base/login', '/adminapi/base/uploadImage'],
   });
   return jwtMiddleware(c, next);
 });

@@ -12,6 +12,7 @@ import { IconCamera, IconPlus } from "@arco-design/web-react/icon";
 import useLocale from "@/hooks/useLocale";
 import locale from "./locale";
 import styles from "./style/header.module.less";
+import baseApi from "@/api/baseApi";
 
 export default function Info({
   userInfo = {},
@@ -25,7 +26,18 @@ export default function Info({
   const [avatar, setAvatar] = useState("");
 
   function onAvatarChange(_, file) {
-    setAvatar(file.originFile ? URL.createObjectURL(file.originFile) : "");
+    console.log("file", file);
+    const originFile = file.originFile;
+    console.log("originFile", originFile);
+    const formData = new FormData();
+    formData.append("file", originFile);
+
+    baseApi.uploadImage(formData).then((res) => {
+      console.log("res", res);
+    });
+
+    // const blobUrl = originFile ? URL.createObjectURL(originFile) : "";
+    // setAvatar(blobUrl);
   }
 
   useEffect(() => {

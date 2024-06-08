@@ -32,6 +32,16 @@ app.post('/editUser', async (c) => {
   return respSuccess(c, result.data);
 });
 
+// 上传图片
+app.post('/uploadImage', async (c) => {
+  const body = await c.req.parseBody();
+  // console.log(body['file']); // File | string
+  return respSuccess(c, {
+    body: JSON.stringify(body),
+    file: body['file'],
+  });
+});
+
 app.get('/index', async (c) => {
   return respSuccess(c, {}, 'adminapi');
 });

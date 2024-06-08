@@ -13,8 +13,13 @@ function editUser(data) {
   return http.post("adminapi/base/editUser", data);
 }
 
+function uploadImage(formData) {
+  return http.upload("adminapi/base/uploadImage", formData);
+}
+
 export default {
   login,
   userInfo,
-  editUser
+  editUser,
+  uploadImage,
 };
