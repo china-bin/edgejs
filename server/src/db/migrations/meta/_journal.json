@@ -5,43 +5,15 @@
     {
       "idx": 0,
       "version": "6",
-      "when": 1716465870411,
-      "tag": "0000_bright_warstar",
+      "when": 1717821377407,
+      "tag": "0000_mighty_may_parker",
       "breakpoints": true
     },
     {
       "idx": 1,
       "version": "6",
-      "when": 1716614385052,
-      "tag": "0001_small_sue_storm",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "6",
-      "when": 1716623132949,
-      "tag": "0002_perpetual_agent_zero",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "6",
-      "when": 1716687425020,
-      "tag": "0003_opposite_kinsey_walden",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "6",
-      "when": 1716719547555,
-      "tag": "0004_yielding_rhodey",
-      "breakpoints": true
-    },
-    {
-      "idx": 5,
-      "version": "6",
-      "when": 1716722202119,
-      "tag": "0005_familiar_moon_knight",
+      "when": 1717821463434,
+      "tag": "0001_mute_menace",
       "breakpoints": true
     }
   ]

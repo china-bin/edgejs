@@ -1,4 +1,4 @@
-import { sql } from 'drizzle-orm';
+import { isNull, sql } from 'drizzle-orm';
 import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 
 // 用户
@@ -50,10 +50,16 @@ export const systemMenu = sqliteTable('system_menu', {
 // 管理员表
 export const admin = sqliteTable('admin', {
   id: integer('id').primaryKey(),
+  uid: text('uid').unique(), // 用户uid
   root: integer('root').default(0), // 是否超级管理员 0-否 1-是
   username: text('username'),
-  avatar: text('avatar'),
   password: text('password'),
+  nickname: text('nickname'), // 昵称
+  avatar: text('avatar'),
+  email: text('email'), // 邮件账号
+  mobile: text('mobile'), // 手机号
+  country: text('country'), // 国家
+  createAt: text('create_at').default(sql`(CURRENT_TIMESTAMP)`),
 });
 
 // 角色表

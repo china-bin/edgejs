@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX `admin_uid_unique` ON `admin` (`uid`);

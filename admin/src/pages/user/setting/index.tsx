@@ -7,7 +7,6 @@ import InfoHeader from './header';
 import InfoForm from './info';
 import Security from './security';
 import './mock';
-import Verified from './verified';
 
 function UserInfo() {
   const t = useLocale(locale);
@@ -26,9 +25,6 @@ function UserInfo() {
           </Tabs.TabPane>
           <Tabs.TabPane key="security" title={t['userSetting.title.security']}>
             <Security />
-          </Tabs.TabPane>
-          <Tabs.TabPane key="verified" title={t['userSetting.label.verified']}>
-            <Verified />
           </Tabs.TabPane>
         </Tabs>
       </Card>

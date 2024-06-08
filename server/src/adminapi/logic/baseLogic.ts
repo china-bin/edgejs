@@ -44,13 +44,11 @@ async function userInfo(c: HonoContext): LogicResponse {
   const db = getDB(c);
   const info = await db.query.admin.findFirst({
     columns: {
-      id: true,
-      username: true,
-      avatar: true,
+      password: false,
     },
     where: eq(admin.id, userId),
   });
-  
+
   const data = {
     ...info,
     permissions: [],
