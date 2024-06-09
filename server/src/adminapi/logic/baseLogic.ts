@@ -5,6 +5,8 @@ import { respSuccess } from '../../utils/resp';
 import { Context, LogicResponse } from '../../types';
 import { sign } from 'hono/jwt';
 import { genAdminJwtToken } from '../../midleware/adminJwtAuth';
+import { arrayBufferToBase64, genUUID, getDate, getFileExt } from '../../utils/ctuil';
+import { file as tableFile } from '../../db/schema';
 
 async function login(c: HonoContext): LogicResponse {
   const body = await c.req.json();
@@ -82,8 +84,52 @@ async function editUser(c: HonoContext): LogicResponse {
   };
 }
 
+async function uploadImage(c: HonoContext): LogicResponse {
+  const body = await c.req.parseBody();
+  const file = body['file'];
+
+  if (file instanceof File) {
+    // const buffer = await image.arrayBuffer();
+    // const base64 = arrayBufferToBase64(buffer);
+    const fileName = file.name;
+    const fileExt = getFileExt(fileName);
+
+    const allowImgExt = ['png', 'jpg', 'jpeg'];
+    if (!allowImgExt.includes(fileExt)) {
+      return {
+        state: false,
+        msg: '不支持的图片后缀:' + fileExt,
+      };
+    }
+
+    const saveDir = `image/${getDate().ymdDir}/${genUUID() + '.' + fileExt}`;
+    await c.env.MY_BUCKET.put(saveDir, file);
+
+    const db = getDB(c);
+
+    await db.insert(tableFile).values({
+      name: saveDir,
+    });
+
+    return {
+      state: true,
+      data: {
+        saveDir,
+        uri: `http://localhost:4000/adminapi/base/image?name=${saveDir}`,
+        // base64: `data:image/${fileExt};base64,` + base64,
+      },
+    };
+  } else {
+    return {
+      state: false,
+      msg: '不是文件',
+    };
+  }
+}
+
 export default {
   login,
   userInfo,
   editUser,
+  uploadImage,
 };

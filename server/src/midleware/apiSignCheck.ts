@@ -29,8 +29,17 @@ function sortToStr(params: Record<string, any>) {
   return hashStrs;
 }
 
-export const apiSignCheck = (options: { signKey: string }): MiddlewareHandler => {
+export const apiSignCheck = (options: {
+  signKey: string;
+  notCheckPaths: string[];
+}): MiddlewareHandler => {
   return async function func(ctx, next) {
+    const reqPath = ctx.req.path;
+    if (options.notCheckPaths.includes(reqPath)) {
+      // 不需要验证签名
+      return await next();
+    }
+
     const params = ctx.req.query();
     const sign = params['sign'];
     if (!sign) {

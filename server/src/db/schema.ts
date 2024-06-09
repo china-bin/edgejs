@@ -25,6 +25,13 @@ export const user = sqliteTable('user', {
   createAt: text('create_at').default(sql`(CURRENT_TIMESTAMP)`),
 });
 
+// 文件
+export const file = sqliteTable('file', {
+  id: integer('id').primaryKey(),
+  name: text('name'), // 文件名
+  createAt: text('create_at').default(sql`(CURRENT_TIMESTAMP)`),
+});
+
 export const apptype = sqliteTable('apptype', {
   id: integer('id').primaryKey(),
   name: text('name'), // 产品名称

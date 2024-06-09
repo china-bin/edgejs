@@ -15,6 +15,13 @@
       "when": 1717821463434,
       "tag": "0001_mute_menace",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1717898721567,
+      "tag": "0002_optimal_hulk",
+      "breakpoints": true
     }
   ]
 }

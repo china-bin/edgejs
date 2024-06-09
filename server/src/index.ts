@@ -25,7 +25,7 @@ app.route('/api', api);
 app.use('/adminapi/*', (c, next) => {
   const jwtMiddleware = adminJwtAuth({
     secret: c.env.ADMAPI_JWT_SECRET,
-    notAuthPaths: ['/adminapi/base/login', '/adminapi/base/uploadImage'],
+    notAuthPaths: ['/adminapi/base/login', '/adminapi/base/image'],
   });
   return jwtMiddleware(c, next);
 });
@@ -36,6 +36,7 @@ app.use(
   apiSignCheck({
     signKey: '34af1db6083ff6f395a0f',
     // signKey: '',
+    notCheckPaths: ['/adminapi/base/login', '/adminapi/base/image'],
   })
 );
 

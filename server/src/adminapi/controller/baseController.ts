@@ -3,7 +3,7 @@ import { Context } from '../../types';
 import { getDB } from '../../utils/helpers';
 import { respFail, respSuccess } from '../../utils/resp';
 import baseLogic from '../logic/baseLogic';
-import { arrayBufferToBase64, getFileExt } from '../../utils/ctuil';
+import { arrayBufferToBase64, genUUID, getDate, getFileExt } from '../../utils/ctuil';
 
 const app = new Hono<Context>();
 
@@ -35,31 +35,31 @@ app.post('/editUser', async (c) => {
 
 // 上传图片
 app.post('/uploadImage', async (c) => {
-  const body = await c.req.parseBody();
-  const file = body['file'];
-
-  if (file instanceof File) {
-    console.log('file', file);
-    // @ts-ignore
-    const buffer = await file.arrayBuffer();
-    const base64 = arrayBufferToBase64(buffer);
-
-    const fileName = file.name;
-    const fileExt = getFileExt(fileName);
-
-    const allowImgExt = ['png', 'jpg', 'jpeg'];
-    if (!allowImgExt.includes(fileExt)) {
-      return respFail(c, '不支持的图片后缀:' + fileExt);
-    }
-
-    return respSuccess(c, {
-      fileName,
-      fileExt,
-      base64: `data:image/${fileExt};base64,` + base64,
-    });
-  } else {
-    return respFail(c, '不是文件');
+  const result = await baseLogic.uploadImage(c);
+  if (!result.state) {
+    return respFail(c, result.msg);
   }
+  return respSuccess(c, result.data);
+});
+
+// 访问图片
+app.get('/image', async (c) => {
+  const params = c.req.query();
+  const name = params['name'];
+
+  const object = await c.env.MY_BUCKET.get(name);
+
+  if (object === null) {
+    return respFail(c, 'Object Not Found', 404);
+  }
+
+  const headers = new Headers();
+  object.writeHttpMetadata(headers);
+  headers.set('etag', object.httpEtag);
+
+  return new Response(object.body, {
+    headers,
+  });
 });
 
 app.get('/index', async (c) => {

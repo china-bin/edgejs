@@ -5,7 +5,7 @@ import * as schema from './db/schema';
 export type Context = {
   Bindings: {
     DB: D1Database;
-    
+    MY_BUCKET: R2Bucket;
     ADMAPI_JWT_SECRET: string;
     API_JWT_SECRET: string;
   };
