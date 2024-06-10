@@ -74,6 +74,7 @@ async function editUser(c: HonoContext): LogicResponse {
       email: body['email'],
       nickname: body['nickname'],
       country: body['country'],
+      avatar: body['avatar'],
     })
     .where(eq(admin.id, userId));
 
@@ -114,7 +115,7 @@ async function uploadImage(c: HonoContext): LogicResponse {
     return {
       state: true,
       data: {
-        saveDir,
+        // saveDir,
         uri: `http://localhost:4000/adminapi/base/image?name=${saveDir}`,
         // base64: `data:image/${fileExt};base64,` + base64,
       },

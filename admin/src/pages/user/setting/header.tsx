@@ -25,28 +25,21 @@ export default function Info({
 
   const [avatar, setAvatar] = useState("");
 
-  // function tesFile(e) {
-  //     console.log("tesFile", e);
-  //     const file =  e.target.files[0];
-  //     console.log("file", file)
-
-  //     const formData = new FormData();
-  //     formData.append("file", file);
-  //     baseApi.uploadImage(formData).then((res) => {
-  //       console.log("res", res);
-  //     });
-
-  // }
-
   function onAvatarChange(_, file) {
     console.log("file", file);
     const formData = new FormData();
     formData.append("file", file.originFile);
-    // formData.append("file", "aaaaaaaaaabbbbbbb");
 
     baseApi.uploadImage(formData).then((res) => {
       console.log("res", res);
-      setAvatar(res.base64);
+      const avatorUri = res.uri;
+      baseApi
+        .editUser({
+          avatar: avatorUri,
+        })
+        .then((res) => {
+          setAvatar(avatorUri);
+        });
     });
 
     // const blobUrl = file.originFile ? URL.createObjectURL(file.originFile) : "";
@@ -68,9 +61,8 @@ export default function Info({
   const loadingNode = <Skeleton text={{ rows: 1 }} animation />;
   return (
     <div className={styles["info-wrapper"]}>
-      {/* <input type="file" onChange={tesFile} /> */}
       <Upload
-        autoUpload={false}
+        
         showUploadList={false}
         onChange={onAvatarChange}
       >
@@ -93,7 +85,7 @@ export default function Info({
         data={[
           {
             label: t["userSetting.label.name"],
-            value: loading ? loadingNode : userInfo.name,
+            value: loading ? loadingNode : userInfo.username,
           },
           {
             label: t["userSetting.label.accountId"],

@@ -31,9 +31,13 @@ export const routes: IRoute[] = [
     key: "apptype-list",
   },
   {
+    name: "文件列表",
+    key: "file-list",
+  },
+  {
     name: "用户信息设置",
     key: "user/setting",
-    ignore: true
+    ignore: true,
   },
 ];
 
